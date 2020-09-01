@@ -16,6 +16,23 @@ class TestGenerator(unittest.TestCase):
         # ........
         # ..X.....
 
+    def test_random_mine_coords(self):
+        width = 8
+        height = 8
+        mine_count = 10
+        actual = generator.random_mine_coords(width, height, mine_count)
+
+        def is_coord_valid(coord):
+            return (0 <= coord[0] < width) and (0 <= coord[1] < height)
+
+        are_all_coords_valid = all(map(is_coord_valid, actual))
+
+        self.assertTrue(are_all_coords_valid)
+        self.assertEqual(len(actual), mine_count)
+
+        # Check there are no duplicates
+        self.assertEqual(len(actual), len(set(actual)))
+
     def test_hints_for_field(self):
         actual = generator.hints_for_field(self.width, self.height, self.mines)
         expected = {
