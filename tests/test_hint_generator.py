@@ -1,7 +1,7 @@
 import unittest
-from minesweeper_model.field import *
+from minesweeper_model.hint_generator import *
 
-class TestField(unittest.TestCase):
+class TestHintGenerator(unittest.TestCase):
     def setUp(self):
         self.width = 8
         self.height = 5
