@@ -1,5 +1,5 @@
 class Field:
-    def __init__(self, width, height, mine_coords = []):
+    def __init__(self, width, height, mine_coords=[]):
         self.width = width
         self.height = height
         self.mine_coords = mine_coords
@@ -12,4 +12,3 @@ class Field:
 
     def open_tile(x, y):
         pass
-
