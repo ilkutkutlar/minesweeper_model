@@ -23,6 +23,9 @@ class Field:
         else:
             self.flag_coords.append(flag)
 
+    def surrounding_hints(self, x, y):
+        pass
+
     def open_tile(self, x, y):
         pass
 
