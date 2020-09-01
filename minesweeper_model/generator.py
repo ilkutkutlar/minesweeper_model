@@ -27,7 +27,7 @@ class Generator:
 
         # Loops generate all surrounding tiles and the tile itself
         surrounding_tiles = [(x, y) for x in [tile_x - 1, tile_x, tile_x + 1]
-                                    for y in [tile_y - 1, tile_y, tile_y + 1]]
+                             for y in [tile_y - 1, tile_y, tile_y + 1]]
 
         # Remove the tile we are checking to only leave surrounding tiles
         surrounding_tiles.remove((tile_x, tile_y))

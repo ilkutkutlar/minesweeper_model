@@ -1,5 +1,6 @@
 import unittest
-from minesweeper_model.generator import *
+from minesweeper_model.generator import Generator
+
 
 class TestGenerator(unittest.TestCase):
     def setUp(self):
@@ -26,14 +27,12 @@ class TestGenerator(unittest.TestCase):
                 }
         self.assertEqual(actual, expected)
 
-
     def test_hint_for_tile(self):
         check_mines = [(0, 0), (3, 2), (5, 3), (4, 2)]
         expected_hints = [0, 1, 2, -1]
 
         for mine, expected in zip(check_mines, expected_hints):
             actual = Generator.hint_for_tile(mine[0], mine[1],
-                                                 self.width, self.height,
-                                                 self.mines)
+                                             self.width, self.height,
+                                             self.mines)
             self.assertEqual(actual, expected)
-

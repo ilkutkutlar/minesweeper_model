@@ -8,4 +8,4 @@ setup(name='minesweeper_model',
       url='https://github.com/ilkutkutlar/minesweeper-model',
       license='MIT',
       packages=['minesweeper_model']
-     )
+      )
