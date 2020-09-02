@@ -17,16 +17,16 @@ class TestField(unittest.TestCase):
         self.assertRaises(ValueError, self.field.toggle_flag, 5, 5)
 
     def test_surrounding_hints(self):
-        self.field.mines = [(0, 0), (3, 2), (1, 0), (2, 1)]
+        self.field.hints = {(0, 0): 1, (3, 2): 1,
+                            (1, 0): 1, (2, 1): 1}
 
         # ....
         # ...X
         # ..X.
         # XX..
 
-        self.assertEqual(self.field.surrounding_hints(0, 3), 0)
-        self.assertEqual(self.field.surrounding_hints(3, 0), 1)
-        self.assertEqual(self.field.surrounding_hints(1, 1), 3)
+        self.assertEqual(self.field.surrounding_hints(0, 3), [])
+        self.assertEqual(self.field.surrounding_hints(3, 0), [(2, 1)])
+        self.assertEqual(self.field.surrounding_hints(1, 1), [(0, 0), (1, 0), (2, 1)])
         # This tile has a mine
-        self.assertEqual(self.field.surrounding_hints(0, 0), 1)
-
+        self.assertEqual(self.field.surrounding_hints(0, 0), [(1, 0)])

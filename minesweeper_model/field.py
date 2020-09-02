@@ -1,4 +1,4 @@
-from minesweeper_model import generator
+from minesweeper_model import generator, helper
 
 
 class Field:
@@ -24,7 +24,9 @@ class Field:
             self.flag_coords.append(flag)
 
     def surrounding_hints(self, x, y):
-        pass
+        surrounding_tiles = helper.surrounding_tiles(x, y)
+        return [t for t in surrounding_tiles
+                if t in self.hints.keys()]
 
     def open_tile(self, x, y):
         pass

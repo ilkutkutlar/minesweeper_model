@@ -1,4 +1,5 @@
 import random
+from minesweeper_model import helper
 
 
 def random_mine_coords(field_width, field_height, mine_count):
@@ -33,12 +34,7 @@ def hint_for_tile(tile_x, tile_y, field_width, field_height, mines):
     if (tile_x, tile_y) in mines:
         return -1
 
-    # Loops generate all surrounding tiles and the tile itself
-    surrounding_tiles = [(x, y) for x in [tile_x - 1, tile_x, tile_x + 1]
-                         for y in [tile_y - 1, tile_y, tile_y + 1]]
-
-    # Remove the tile we are checking to only leave surrounding tiles
-    surrounding_tiles.remove((tile_x, tile_y))
+    surrounding_tiles = helper.surrounding_tiles(tile_x, tile_y)
 
     # No need to worry about edge cases caused by -ve tile coords in
     # surrounding_tiles as the mines list simply won't have the -ve
