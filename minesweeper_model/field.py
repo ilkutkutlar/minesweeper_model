@@ -1,4 +1,4 @@
-from minesweeper_model import generator
+from minesweeper_model import generator, helper
 
 
 class Field:
@@ -18,6 +18,20 @@ class PlayerField:
         self.flag_coords = []
         self.hints = generator.hints_for_field(
                      field.width, field.height, field.mine_coords)
+
+    def tile(self, x, y):
+        if (x, y) in self.open_coords:
+            return {"hint": self.hints[(x, y)],
+                    "flag": False}
+        else:
+            flag = (x, y) in self.flag_coords
+            return {"hint": None,
+                    "flag": flag}
+
+    def nine_tiles(self, middle_x, middle_y):
+        nine_tiles = helper.surrounding_tiles(middle_x, middle_y, True) + [(middle_x, middle_y)]
+        return {coords: self.tile(coords[0], coords[1])
+                for coords in nine_tiles}
 
     def open_tile(self, x, y):
         if (x, y) in self.field.mine_coords:

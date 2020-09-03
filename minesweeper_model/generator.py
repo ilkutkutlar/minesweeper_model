@@ -10,12 +10,12 @@ def random_mine_coords(field_width, field_height, mine_count):
 
 
 def hints_for_field(field_width, field_height, mines):
-    return {(x, y): hint_for_tile(x, y, field_width, field_height, mines)
+    return {(x, y): hint_for_tile(x, y, mines)
             for x in range(field_width)
             for y in range(field_height)}
 
 
-def hint_for_tile(tile_x, tile_y, field_width, field_height, mines):
+def hint_for_tile(tile_x, tile_y, mines):
 
     """Return the hint for the given tile.
 

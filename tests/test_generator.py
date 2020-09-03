@@ -50,6 +50,5 @@ class TestGenerator(unittest.TestCase):
 
         for mine, expected in zip(check_mines, expected_hints):
             actual = generator.hint_for_tile(mine[0], mine[1],
-                                             self.width, self.height,
                                              self.mines)
             self.assertEqual(actual, expected)
