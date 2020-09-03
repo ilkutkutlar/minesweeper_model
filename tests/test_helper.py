@@ -10,6 +10,7 @@ class TestHelper(unittest.TestCase):
                     (3, 1), (4, 1), (5, 1)]
         self.assertCountEqual(actual, expected)
 
+    def test_surrounding_tiles_remove_outside_tiles(self):
         actual = helper.surrounding_tiles(0, 1, True)
         expected = [(0, 0), (0, 2), (1, 0), (1, 1), (1, 2)]
         self.assertCountEqual(actual, expected)

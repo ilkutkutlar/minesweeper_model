@@ -1,4 +1,4 @@
-def surrounding_tiles(tile_x, tile_y, remove_tiles_outside=False):
+def surrounding_tiles(tile_x, tile_y, remove_outside_tiles=False):
 
     """Return the 8 tiles surrounding the given tile.
 
@@ -19,7 +19,7 @@ def surrounding_tiles(tile_x, tile_y, remove_tiles_outside=False):
     # Remove the tile itself to only leave surrounding tiles
     tiles.remove((tile_x, tile_y))
 
-    if remove_tiles_outside:
+    if remove_outside_tiles:
         tiles = list(filter(
                 lambda t: t[0] >= 0 and t[1] >= 0,
                 tiles))
