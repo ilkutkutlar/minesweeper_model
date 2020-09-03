@@ -22,8 +22,6 @@ def hint_for_tile(tile_x, tile_y, mines):
     Parameters:
         tile_x: X coord of tile
         tile_y: Y coord of tile
-        field_with: width of Minesweeper field
-        field_height: height of Minesweeper field
         mines (list of two-tuples): list of mine coords
 
     Returns:

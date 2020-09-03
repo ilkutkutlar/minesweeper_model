@@ -30,14 +30,14 @@ class TestPlayerField(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_nine_tiles(self):
-        # o: closed tile
+        # .: closed tile
         # [0-9]: open tile, hint
-        # X: mine
+        # x: mine
         # ----------
-        # o o o o
-        # o o o o
-        # 2 2 o o
-        # X X o o
+        # . . . .
+        # 2 2 . .
+        # x x . .
+        # . . . .
 
         actual = self.field2.nine_tiles(0, 1)
         # Expect to exclude tiles outside the field.
@@ -70,3 +70,17 @@ class TestPlayerField(unittest.TestCase):
         self.assertEqual(self.field1.flag_coords, [])
 
         self.assertRaises(ValueError, self.field1.toggle_flag, 5, 5)
+
+    def test_render(self):
+        mines = [(0, 0), (3, 1), (0, 3)]
+        f = field.Field(4, 4, mines)
+        pf = field.PlayerField(f)
+        pf.flag_coords = [(1, 1)]
+        pf.open_coords = [(0, 1), (3, 3)]
+        pf.hints = {(0, 1): 1, (3, 3): 0}
+
+        expected = "....\n1!..\n....\n...0\n"
+        self.assertEqual(pf.render(), expected)
+
+        expected = "oooo\n1?oo\noooo\nooo0\n"
+        self.assertEqual(pf.render("?", "o"), expected)
