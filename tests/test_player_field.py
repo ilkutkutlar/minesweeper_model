@@ -33,8 +33,9 @@ class TestPlayerField(unittest.TestCase):
         # .: closed tile
         # [0-9]: open tile, hint
         # x: mine
+        # !: flag
         # ----------
-        # . . . .
+        # ! . . .
         # 2 2 . .
         # x x . .
         # . . . .

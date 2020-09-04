@@ -1,5 +1,5 @@
 import random
-from minesweeper_model import helper
+from minesweeper_model import utility
 
 
 def random_mine_coords(field_width, field_height, mine_count):
@@ -32,7 +32,7 @@ def hint_for_tile(tile_x, tile_y, mines):
     if (tile_x, tile_y) in mines:
         return -1
 
-    surrounding_tiles = helper.surrounding_tiles(tile_x, tile_y)
+    surrounding_tiles = utility.surrounding_tiles(tile_x, tile_y)
 
     # No need to worry about edge cases caused by -ve tile coords in
     # surrounding_tiles as the mines list simply won't have the -ve

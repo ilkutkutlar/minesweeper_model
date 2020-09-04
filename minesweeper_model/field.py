@@ -1,4 +1,4 @@
-from minesweeper_model import generator, helper
+from minesweeper_model import generator, utility
 
 
 class Field:
@@ -42,7 +42,7 @@ class PlayerField:
                     "flag": flag}
 
     def nine_tiles(self, middle_x, middle_y):
-        nine_tiles = helper.surrounding_tiles(middle_x, middle_y, True) + [(middle_x, middle_y)]
+        nine_tiles = utility.surrounding_tiles(middle_x, middle_y, True) + [(middle_x, middle_y)]
         return {coords: self.tile(coords[0], coords[1])
                 for coords in nine_tiles}
 
