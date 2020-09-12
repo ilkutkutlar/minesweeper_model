@@ -15,6 +15,9 @@ class TestPlayerField(unittest.TestCase):
                              (2, 0): 1, (2, 1): 1, (2, 2): 0, (2, 3): 0,
                              (3, 0): 0, (3, 1): 0, (3, 2): 0, (3, 3): 0}
 
+        field3_mines = [(2, 0), (2, 2), (6, 3), (1, 5), (5, 6)]
+        self.field3 = field.PlayerField(field.Field(8, 7, field3_mines))
+
     def test_tile(self):
         actual = self.field2.tile(1, 1)
         expected = {"hint": 2, "flag": False}
@@ -61,6 +64,32 @@ class TestPlayerField(unittest.TestCase):
         # Tile with mine
         self.assertFalse(self.field1.open_tile(0, 0))
         self.assertEqual(self.field1.open_coords, [(1, 0)])
+
+    def test_open_tile_open_adjacent_tiles(self):
+        # field3
+        # mines:        hints:      expected open:
+        #
+        # ..x.....      01x10000    ..x+++++
+        # ........      02220000    ...+++++
+        # ..x.....      01x10111    ..x+++++
+        # ......x.      011101x1    ...+++x.
+        # ........      11100111    ..++++..
+        # .x......      1x101110    .x+++...
+        # .....x..      11101x10    ..+++x..
+
+        self.field3.open_tile(5, 1, True)
+
+        # expect adjacent 0 hint tiles to open recursively until a non-zero hint tile
+        # is found, when the adjacent tiles are opened the last time and algorithm stops.
+        expected_open_coords = [(3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
+                                (3, 1), (4, 1), (5, 1), (6, 1), (7, 1),
+                                (3, 2), (4, 2), (5, 2), (6, 2), (7, 2),
+                                (3, 3), (4, 3), (5, 3),
+                                (2, 4), (3, 4), (4, 4), (5, 4),
+                                (2, 5), (3, 5), (4, 5),
+                                (2, 6), (3, 6), (4, 6)]
+        self.assertEqual(self.field3.open_coords, expected_open_coords)
+
 
     def test_toggle_flag(self):
         self.field1.toggle_flag(0, 1)
