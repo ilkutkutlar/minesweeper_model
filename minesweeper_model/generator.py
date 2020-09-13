@@ -32,11 +32,11 @@ def hint_for_tile(tile_x, tile_y, mines):
     if (tile_x, tile_y) in mines:
         return -1
 
-    adjacent_tiles = utility.surrounding_tiles(tile_x, tile_y)
+    surrounding_tiles = utility.surrounding_tiles(tile_x, tile_y)
 
     # No need to worry about edge cases caused by -ve tile coords in
-    # adjacent_tiles as the mines list simply won't have the -ve
+    # surrounding_tiles as the mines list simply won't have the -ve
     # coords and those coords will register as False, as desired
-    adjacent_tiles_have_mine = [(x, y) in mines for (x, y) in adjacent_tiles]
+    surrounding_tiles_have_mine = [(x, y) in mines for (x, y) in surrounding_tiles]
 
-    return adjacent_tiles_have_mine .count(True)
+    return surrounding_tiles_have_mine.count(True)

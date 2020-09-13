@@ -65,7 +65,6 @@ class TestPlayerField(unittest.TestCase):
         self.assertFalse(self.field1.open_tile(0, 0))
         self.assertEqual(self.field1.open_coords, [(1, 0)])
 
-    @unittest.skip
     def test_open_tile_open_adjacent_tiles(self):
         # field3
         # mines:        hints:      expected open:
@@ -101,7 +100,7 @@ class TestPlayerField(unittest.TestCase):
 
         self.assertRaises(ValueError, self.field1.toggle_flag, 5, 5)
 
-    def test_traverse_adjacent_tiles(self):
+    def test_traverse_tiles(self):
         # ..x.....      01x10000
         # .....~..      02220~00
         # ..x.....      01x10111
@@ -112,10 +111,10 @@ class TestPlayerField(unittest.TestCase):
 
         # Adjacent 0: [(4, 0), (4, 1), (4, 2), (5, 0), (6, 0), (6, 1)]
 
-        def adjacent(x, y, field, player_field):
-            return player_field._adjacent_zero_hint_tiles(x, y)
+        def should_visit(x, y, player_field):
+            return player_field.hints[(x, y)] == 0
 
-        actual = self.field3.traverse_adjacent_tiles(0, 0, adjacent)
+        actual = self.field3.traverse_tiles(0, 0, should_visit)
         expected = [(0, 0), (0, 1), (0, 2), (0, 3)]
         self.assertEqual(actual, expected)
 

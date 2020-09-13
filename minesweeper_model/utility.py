@@ -20,8 +20,6 @@ def surrounding_tiles(tile_x, tile_y, remove_outside_tiles=False):
     tiles.remove((tile_x, tile_y))
 
     if remove_outside_tiles:
-        tiles = list(filter(
-                lambda t: t[0] >= 0 and t[1] >= 0,
-                tiles))
+        tiles = [(x, y) for (x, y) in tiles if x >= 0 and y >= 0]
 
     return tiles
