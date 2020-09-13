@@ -65,6 +65,7 @@ class TestPlayerField(unittest.TestCase):
         self.assertFalse(self.field1.open_tile(0, 0))
         self.assertEqual(self.field1.open_coords, [(1, 0)])
 
+    @unittest.skip("Not implemented")
     def test_open_tile_open_adjacent_tiles(self):
         # field3
         # mines:        hints:      expected open:
