@@ -58,8 +58,12 @@ Change the field in ways allowed for a player:
 # This will open the tile in given coordinates. Will return
 # True if tile does not hide a mine, False otherwise.
 # If tile has no mine, given coordinates will be added to open_coords.
-# Unlike some Minesweeper games, this won't open adjacent tiles with a hint of 0.
 player_field.open_tile(x, y)
+
+# Pass True to the third coordinate so that in addition to the given tile
+# being opened, all the adjacent tiles with a hint of 0 will also be opened,
+# similar to the way it does in some versions of the Minesweeper game. 
+player_field.open_tile(x, y, True)
 
 # Add or remove flag on tile.
 player_field.toggle_flag(x, y)
