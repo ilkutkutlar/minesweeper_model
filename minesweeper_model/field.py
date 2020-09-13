@@ -52,29 +52,7 @@ class PlayerField:
             self.open_coords.add((x, y))
 
             if open_adjacent_tiles:
-                def should_visit(x, y, player_field):
-                    if (x, y) not in player_field.hints:
-                        return False
-
-                    return player_field.hints[(x, y)] == 0
-
-                adj_zero_hint_tiles = self.traverse_tiles(x, y, should_visit)
-                self.open_coords.update(adj_zero_hint_tiles)
-
-                # We've found zero-hint tiles above. These zero-hint tiles are arranged
-                # contiguously on the minefield and form an area. Lastly, we need to
-                # also open the tiles surrounding the tiles on the edge of this area.
-                # Instead of finding the edge tiles, we can find and open the
-                # surrounding tiles of all tiles within the area to have the same effect.
-
-                all_surrounding_tiles = set()
-                for (x, y) in adj_zero_hint_tiles:
-                    all_surrounding_tiles.update(utility.surrounding_tiles(x, y, True))
-
-                valid_surrounding_tiles = {(x, y) for (x, y) in all_surrounding_tiles
-                                           if self.field.are_coords_valid(x, y)}
-
-                self.open_coords.update(valid_surrounding_tiles)
+                self._open_adjacent_zero_hint_tiles(x, y)
 
             return True
 
@@ -139,6 +117,28 @@ class PlayerField:
             string += "\n"
 
         return string
+
+    def _open_adjacent_zero_hint_tiles(self, x, y):
+        def should_visit(x, y, player_field):
+            return player_field.hints.get((x, y)) == 0
+
+        adj_zero_hint_tiles = self.traverse_tiles(x, y, should_visit)
+
+        # We've found zero-hint tiles above. These zero-hint tiles are arranged
+        # contiguously on the minefield and form an area. Lastly, we need to
+        # also open the tiles surrounding the tiles on the edge of this area.
+        # Instead of finding the edge tiles, we can find and open the
+        # surrounding tiles of all tiles within the area to have the same effect.
+
+        all_surrounding_tiles = set()
+        for (x, y) in adj_zero_hint_tiles:
+            all_surrounding_tiles.update(utility.surrounding_tiles(x, y, True))
+
+        valid_surrounding_tiles = {(x, y) for (x, y) in all_surrounding_tiles
+                                   if self.field.are_coords_valid(x, y)}
+
+        self.open_coords.update(adj_zero_hint_tiles)
+        self.open_coords.update(valid_surrounding_tiles)
 
     def __str__(self):
         return self.render()
