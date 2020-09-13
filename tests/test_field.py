@@ -9,7 +9,7 @@ class TestField(unittest.TestCase):
         self.assertFalse(f.are_coords_valid(5, 2))
 
     def test_render(self):
-        mines = [(0, 0), (3, 1), (1, 3)]
+        mines = {(0, 0), (3, 1), (1, 3)}
         f = field.Field(4, 4, mines)
 
         expected = "x...\n...x\n....\n.x..\n"
