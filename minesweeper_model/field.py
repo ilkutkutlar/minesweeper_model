@@ -7,30 +7,9 @@ class Field:
         self.height = height
         self.mine_coords = mine_coords
 
-    def are_coords_valid(self, x, y):
-        return (0 <= x < self.width) and (0 <= y < self.height)
-
-    def render(self, tile_str=".", mine_str="x"):
-        string = ""
-
-        for y in range(self.height):
-            for x in range(self.width):
-                string += mine_str if (x, y) in self.mine_coords else tile_str
-            string += "\n"
-
-        return string
-
-    def __str__(self):
-        return self.render()
-
-
-class PlayerField:
-    def __init__(self, field):
-        self.field = field
         self.open_coords = set()
         self.flag_coords = set()
-        self.hints = generator.hints_for_field(
-                     field.width, field.height, field.mine_coords)
+        self.hints = generator.hints_for_field(width, height, mine_coords)
 
     def tile(self, x, y):
         if (x, y) in self.open_coords:
@@ -46,7 +25,7 @@ class PlayerField:
         return {(x, y): self.tile(x, y) for (x, y) in nine_tiles}
 
     def open_tile(self, x, y, open_adjacent_tiles=False):
-        if (x, y) in self.field.mine_coords:
+        if (x, y) in self.mine_coords:
             return False
         else:
             self.open_coords.add((x, y))
@@ -59,7 +38,7 @@ class PlayerField:
     def toggle_flag(self, x, y):
         flag = (x, y)
 
-        if not self.field.are_coords_valid(flag[0], flag[1]):
+        if not self.are_coords_valid(flag[0], flag[1]):
             raise ValueError("Invalid coordinate given: point out of field")
 
         if flag in self.flag_coords:
@@ -76,7 +55,7 @@ class PlayerField:
         Parameters:
             x: X coord of starting tile
             y: Y coord of starting tile
-            should_visit: function which accepts (x, y, player_field)
+            should_visit: function which accepts (x, y, field)
                 Returns a boolean of whether given tile should be visited.
             visited: Already visited tiles; used for recursion.
 
@@ -100,11 +79,21 @@ class PlayerField:
 
         return tiles_below
 
-    def render(self, flag_str="!", closed_str="."):
+    def render_mines(self, tile_str=".", mine_str="x"):
         string = ""
 
-        for y in range(self.field.height):
-            for x in range(self.field.width):
+        for y in range(self.height):
+            for x in range(self.width):
+                string += mine_str if (x, y) in self.mine_coords else tile_str
+            string += "\n"
+
+        return string
+
+    def render_player_field(self, flag_str="!", closed_str="."):
+        string = ""
+
+        for y in range(self.height):
+            for x in range(self.width):
                 tile = (x, y)
 
                 if tile in self.flag_coords:
@@ -118,9 +107,12 @@ class PlayerField:
 
         return string
 
+    def are_coords_valid(self, x, y):
+        return (0 <= x < self.width) and (0 <= y < self.height)
+
     def _open_adjacent_zero_hint_tiles(self, x, y):
-        def should_visit(x, y, player_field):
-            return player_field.hints.get((x, y)) == 0
+        def should_visit(x, y, field):
+            return field.hints.get((x, y)) == 0
 
         adj_zero_hint_tiles = self.traverse_tiles(x, y, should_visit)
 
@@ -135,10 +127,7 @@ class PlayerField:
             all_surrounding_tiles.update(utility.surrounding_tiles(x, y, True))
 
         valid_surrounding_tiles = {(x, y) for (x, y) in all_surrounding_tiles
-                                   if self.field.are_coords_valid(x, y)}
+                                   if self.are_coords_valid(x, y)}
 
         self.open_coords.update(adj_zero_hint_tiles)
         self.open_coords.update(valid_surrounding_tiles)
-
-    def __str__(self):
-        return self.render()
