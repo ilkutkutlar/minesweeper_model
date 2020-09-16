@@ -16,7 +16,11 @@ class TestUtility(unittest.TestCase):
         self.assertCountEqual(actual, expected)
 
     def test_str_input_to_mine_coords(self):
-        str_field = "..x...x\n.......\n....x..\n......x\nx......"
+        str_field = """..x...x
+.......
+....x..
+......x
+x......"""
 
         x, y, mines = utility.str_input_to_mine_coords(str_field)
         expected_mines = {(2, 0), (6, 0), (4, 2), (6, 3), (0, 4)}

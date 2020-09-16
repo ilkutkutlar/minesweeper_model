@@ -26,19 +26,19 @@ def surrounding_tiles(tile_x, tile_y, remove_outside_tiles=False):
 
 
 def str_input_to_mine_coords(input_string):
-    mine_coord = []
+    rows = input_string.split("\n")
+    x_len, y_len = len(rows[0]), len(rows)
 
-    temp = input_string.split("\n")
-    x_len, y_len = len(temp[0]), len(temp)
-
+    mine_coords = []
     x_mine, y_mine = 0, 0
 
-    for i in temp:
+    for row in rows:
         x_mine = 0
-        for s in i:
-            if(s == 'x'):
-                mine_coord.append((x_mine, y_mine))
+
+        for col in row:
+            if(col == 'x'):
+                mine_coords.append((x_mine, y_mine))
             x_mine += 1
         y_mine += 1
 
-    return (x_len, y_len, mine_coord)
+    return (x_len, y_len, mine_coords)

@@ -199,5 +199,16 @@ surrounding_tiles(0, 0, True)
 Convert a textual representation of a field to parameters you can pass to a `Field` object as an easier way of creating fields (Thanks to @27Anurag for the contribution):
 
 ```py
+from minesweeper_model
 
+str_field = """..x...x
+.......
+....x..
+......x
+x......"""
+
+width, height, mine_coords = utility.str_input_to_mine_coords(str_field)
+
+# => width: 7, height: 5, mine_coords: [(2, 0), (6, 0), (4, 2), (6, 3), (0, 4)]
+f = field.Field(width, height, mine_coords)
 ```
