@@ -196,7 +196,7 @@ surrounding_tiles(0, 0, True)
 # => [(0, 1), (1, 0), (1, 1)]
 ```
 
-Convert a textual representation of a field to parameters you can pass to a `Field` object as an easier way of creating fields (Thanks to @27Anurag for the contribution):
+Convert a textual representation of a field to parameters you can pass to a `Field` object as an easier way of creating fields (Thanks to <a href="https://github.com/27Anurag">@27Anurag</a> for the contribution):
 
 ```py
 from minesweeper_model
