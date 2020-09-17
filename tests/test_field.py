@@ -10,10 +10,24 @@ class TestField(unittest.TestCase):
         self.field2.mine_coords = {(0, 0), (1, 0)}
         self.field2.open_coords = {(1, 1), (0, 1)}
         self.field2.flag_coords = {(0, 0), (2, 1)}
-        self.field2.hints = {(0, 0): -1, (0, 1): 2, (0, 2): 0, (0, 3): 0,
-                             (1, 0): -1, (1, 1): 2, (1, 2): 0, (1, 3): 0,
-                             (2, 0): 1, (2, 1): 1, (2, 2): 0, (2, 3): 0,
-                             (3, 0): 0, (3, 1): 0, (3, 2): 0, (3, 3): 0}
+        self.field2.hints = {
+            (0, 0): -1,
+            (0, 1): 2,
+            (0, 2): 0,
+            (0, 3): 0,
+            (1, 0): -1,
+            (1, 1): 2,
+            (1, 2): 0,
+            (1, 3): 0,
+            (2, 0): 1,
+            (2, 1): 1,
+            (2, 2): 0,
+            (2, 3): 0,
+            (3, 0): 0,
+            (3, 1): 0,
+            (3, 2): 0,
+            (3, 3): 0,
+        }
 
         field3_mines = {(2, 0), (2, 2), (6, 3), (1, 5), (5, 6)}
         self.field3 = field.Field(8, 7, field3_mines)
@@ -45,12 +59,14 @@ class TestField(unittest.TestCase):
 
         actual = self.field2.nine_tiles(0, 1)
         # Expect to exclude tiles outside the field.
-        expected = {(0, 0): {"hint": None, "flag": True},
-                    (0, 2): {"hint": None, "flag": False},
-                    (1, 0): {"hint": None, "flag": False},
-                    (1, 1): {"hint": 2, "flag": False},
-                    (1, 2): {"hint": None, "flag": False},
-                    (0, 1): {"hint": 2, "flag": False}}
+        expected = {
+            (0, 0): {"hint": None, "flag": True},
+            (0, 2): {"hint": None, "flag": False},
+            (1, 0): {"hint": None, "flag": False},
+            (1, 1): {"hint": 2, "flag": False},
+            (1, 2): {"hint": None, "flag": False},
+            (0, 1): {"hint": 2, "flag": False},
+        }
 
         self.assertEqual(actual, expected)
 
@@ -81,13 +97,38 @@ class TestField(unittest.TestCase):
 
         # expect adjacent 0 hint tiles to open recursively until a non-zero hint tile
         # is found, when the adjacent tiles are opened the last time and algorithm stops.
-        expected_open_coords = {(3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
-                                (3, 1), (4, 1), (5, 1), (6, 1), (7, 1),
-                                (3, 2), (4, 2), (5, 2), (6, 2), (7, 2),
-                                (2, 3), (3, 3), (4, 3), (5, 3),
-                                (2, 4), (3, 4), (4, 4), (5, 4),
-                                (2, 5), (3, 5), (4, 5), (5, 5),
-                                (2, 6), (3, 6), (4, 6)}
+        expected_open_coords = {
+            (3, 0),
+            (4, 0),
+            (5, 0),
+            (6, 0),
+            (7, 0),
+            (3, 1),
+            (4, 1),
+            (5, 1),
+            (6, 1),
+            (7, 1),
+            (3, 2),
+            (4, 2),
+            (5, 2),
+            (6, 2),
+            (7, 2),
+            (2, 3),
+            (3, 3),
+            (4, 3),
+            (5, 3),
+            (2, 4),
+            (3, 4),
+            (4, 4),
+            (5, 4),
+            (2, 5),
+            (3, 5),
+            (4, 5),
+            (5, 5),
+            (2, 6),
+            (3, 6),
+            (4, 6),
+        }
         self.assertEqual(self.field3.open_coords, expected_open_coords)
 
     def test_toggle_flag(self):

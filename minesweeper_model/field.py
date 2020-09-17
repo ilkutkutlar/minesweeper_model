@@ -13,15 +13,15 @@ class Field:
 
     def tile(self, x, y):
         if (x, y) in self.open_coords:
-            return {"hint": self.hints[(x, y)],
-                    "flag": False}
+            return {"hint": self.hints[(x, y)], "flag": False}
         else:
             flag = (x, y) in self.flag_coords
-            return {"hint": None,
-                    "flag": flag}
+            return {"hint": None, "flag": flag}
 
     def nine_tiles(self, middle_x, middle_y):
-        nine_tiles = utility.surrounding_tiles(middle_x, middle_y, True) + [(middle_x, middle_y)]
+        nine_tiles = utility.surrounding_tiles(middle_x, middle_y, True) + [
+            (middle_x, middle_y)
+        ]
         return {(x, y): self.tile(x, y) for (x, y) in nine_tiles}
 
     def open_tile(self, x, y, open_adjacent_tiles=False):
@@ -67,7 +67,9 @@ class Field:
         visited.add((x, y))
 
         all_surrounding = utility.surrounding_tiles(x, y, True)
-        tiles_to_visit = [(x, y) for (x, y) in all_surrounding if should_visit(x, y, self)]
+        tiles_to_visit = [
+            (x, y) for (x, y) in all_surrounding if should_visit(x, y, self)
+        ]
         tiles_to_visit = [t for t in tiles_to_visit if t not in visited]
 
         # Tiles that lay underneath this level of the "tree"
@@ -126,8 +128,9 @@ class Field:
         for (x, y) in adj_zero_hint_tiles:
             all_surrounding_tiles.update(utility.surrounding_tiles(x, y, True))
 
-        valid_surrounding_tiles = {(x, y) for (x, y) in all_surrounding_tiles
-                                   if self.are_coords_valid(x, y)}
+        valid_surrounding_tiles = {
+            (x, y) for (x, y) in all_surrounding_tiles if self.are_coords_valid(x, y)
+        }
 
         self.open_coords.update(adj_zero_hint_tiles)
         self.open_coords.update(valid_surrounding_tiles)

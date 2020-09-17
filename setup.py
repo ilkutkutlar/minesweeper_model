@@ -3,23 +3,24 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
-setup(name='minesweeper_model',
-      version='0.0.2',
-      description='Tools to model a Minesweeper game and interact with it programmatically.',
-      long_description=long_description,
-      long_description_content_type='text/markdown',
-      author='Ilkut Kutlar',
-      author_email='ilkutkutlar@gmail.com',
-      url='https://github.com/ilkutkutlar/minesweeper_model',
-      download_url='https://github.com/ilkutkutlar/minesweeper_model/archive/v0.0.2.tar.gz',
-      keywords=['minesweeper', 'model'],
-      license='MIT',
-      packages=['minesweeper_model'],
-      classifiers=[
-          'Development Status :: 3 - Alpha',
-          'Intended Audience :: Developers',
-          'License :: OSI Approved :: MIT License',
-          'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.6'
-      ],
-      )
+setup(
+    name="minesweeper_model",
+    version="0.1.0",
+    description="Tools to model a Minesweeper game and interact with it programmatically.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author="Ilkut Kutlar",
+    author_email="ilkutkutlar@gmail.com",
+    url="https://github.com/ilkutkutlar/minesweeper_model",
+    download_url="https://github.com/ilkutkutlar/minesweeper_model/archive/v0.1.0.tar.gz",
+    keywords=["minesweeper", "model"],
+    license="MIT",
+    packages=["minesweeper_model"],
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+    ],
+)

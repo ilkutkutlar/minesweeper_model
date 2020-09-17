@@ -4,15 +4,16 @@ from minesweeper_model import utility
 
 def random_mine_coords(field_width, field_height, mine_count):
     random.seed()
-    all_field_coords = [(x, y) for x in range(field_width)
-                        for y in range(field_height)]
+    all_field_coords = [(x, y) for x in range(field_width) for y in range(field_height)]
     return random.sample(all_field_coords, mine_count)
 
 
 def hints_for_field(field_width, field_height, mines):
-    return {(x, y): hint_for_tile(x, y, mines)
-            for x in range(field_width)
-            for y in range(field_height)}
+    return {
+        (x, y): hint_for_tile(x, y, mines)
+        for x in range(field_width)
+        for y in range(field_height)
+    }
 
 
 def hint_for_tile(tile_x, tile_y, mines):

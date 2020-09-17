@@ -13,8 +13,11 @@ def surrounding_tiles(tile_x, tile_y, remove_outside_tiles=False):
     """
 
     # Loops generate all surrounding tiles and the tile itself
-    tiles = [(x, y) for x in [tile_x - 1, tile_x, tile_x + 1]
-             for y in [tile_y - 1, tile_y, tile_y + 1]]
+    tiles = [
+        (x, y)
+        for x in [tile_x - 1, tile_x, tile_x + 1]
+        for y in [tile_y - 1, tile_y, tile_y + 1]
+    ]
 
     # Remove the tile itself to only leave surrounding tiles
     tiles.remove((tile_x, tile_y))
@@ -36,7 +39,7 @@ def str_input_to_mine_coords(input_string):
         x_mine = 0
 
         for col in row:
-            if(col == 'x'):
+            if col == "x":
                 mine_coords.append((x_mine, y_mine))
             x_mine += 1
         y_mine += 1
