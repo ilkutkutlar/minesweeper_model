@@ -16,9 +16,9 @@ pip install minesweeper-model
 
 ## Usage
 
-This package offers two field classes: `Field` and `PlayerField`. `Field` is the actual minefield storing the location of mines. By the rules of the game, the player isn't supposed to have access to this.
+This package offers a `Field` class which models a minefield in a Minefield game. It stores all the necessary state of a field: the open tiles, flagged tiles, tiles with a mine under it, etc. By the rules of the game, the player isn't allowed to know where the mines are hidden.
 
-`PlayerField` is the minefield that the player is allowed to access: It doesn't (directly) reveal the location of mines, but lets you see hints (number of mines in surrounding tiles) and flags you put as a player.
+The `Field` class has methods to allow interacting with it as a player (i.e. you are only given hints, the number of mines surrounding a tile, but not the mine locations). However, of course, direct access to mine locations are possible if desired as well.
 
 ### Initialization
 
@@ -27,82 +27,72 @@ from minesweeper_model import field
 
 # Mine locations are expressed as two-tuples (x, y)
 # The top-left tile in the minefield has coordinates (0, 0).
+# Mine locations argument is optional, so a field without mines
+# is theoretically possible.
 mine_coords = [(0, 0), (1, 0)]
-real_field = field.Field(5, 5, mine_coords)
-
-# Give the real field to PlayerField, so it can compute
-# hints and report failure if a mine tile is opened.
-player_field = field.PlayerField(real_field)
+field = field.Field(5, 5, mine_coords)
 ```
 
-### Interact with the field as a player
+### Data stored in the `Field` class
 
-Use `PlayerField` object to request information about the field and only receive what the player is allowed to know about (i.e. anything except the locationg of mines):
+```py
+# List of tuples (x, y) of mine coordinates.
+field.mine_coords
+
+# List of tuples (x, y) of coordinates which have been opened by the player.
+field.open_coords
+
+# List of tuples (x, y) of coordinates which have been flagged as having a mine.
+field.flag_coords
+
+# Dictionary populated with the "hint" for all tiles in the Field given
+# during initialization of the `PlayerField` class. This is the number 
+# of mines in the surrounding 8 tiles for each tile. Dictionary is in the 
+# format `{(x, y): int}` where int is the hint with possible values 
+# being 0 to 8 or -1 (for tiles which have mines underneath)
+field.hints
+```
+
+### Interact with the `Field` class
+
+Use the `tile` and `nine_tiles` methods to get information about a single field and a group of nine fields respectively. You will only receive the information a player would get (i.e. anything but the location of mines)
 
 ```py
 # Return a dictionary {"hint": int, "flag": bool} where
 # "hint" is the hint revealed by openning the tile, or
 # the value None if the tile is closed. "flag" is whether
 # the tile is flagged.
-player_field.tile(x, y)
+field.tile(x, y)
 
 # Returns the same data as `tile` method for the given
 # tile as well as the 8 tiles surrounding it.
 # Data is returned in format: {(x, y): {"hint": int, "flag": bool}, ...}
-player_field.nine_tiles(middle_x, middle_y)
+field.nine_tiles(middle_x, middle_y)
 ```
 
-Change the field in ways allowed for a player:
+Open tiles and place flags in the field:
 
 ```py
 # This will open the tile in given coordinates. Will return
 # True if tile does not hide a mine, False otherwise.
 # If tile has no mine, given coordinates will be added to open_coords.
-player_field.open_tile(x, y)
+field.open_tile(x, y)
 
 # Pass True to the third coordinate so that in addition to the given tile
 # being opened, all the adjacent tiles with a hint of 0 will also be opened,
 # similar to the way it does in some versions of the Minesweeper game. 
-player_field.open_tile(x, y, True)
+field.open_tile(x, y, True)
 
 # Add or remove flag on tile.
-player_field.toggle_flag(x, y)
-```
-
-### Direct access to field data
-
-PlayerField keeps coordinates of three objects:
-
-#### 1. Hints
-
-Dictionary populated with the "hint" for all tiles in the Field given during initialization of the `PlayerField` class. This is the number of mines in the surrounding 8 tiles for each tile. Dictionary is in the format `{(x, y): int}` where int is the hint with possible values being 0 to 8 or -1 (for tiles which have mines underneath):
-
-```py
-player_field.hints
-```
-
-#### 2. Open coordinates
-
-List of tuples (x, y) of coordinates which have been opened by the player:
-
-```py
-player_field.open_coords
-```
-
-#### 3. Flag coordinates
-
-List of tuples (x, y) of coordinates which have been flagged as having a mine:
-
-```py
-player_field.flag_coords
+field.toggle_flag(x, y)
 ```
 
 ### Visual representation of fields
 
-Draw the real field showing mine locations:
+Draw the field showing mine locations:
 
 ```py
-print(real_field.render())
+print(field.render_mines())
 
 # x...
 # ...x
@@ -110,7 +100,7 @@ print(real_field.render())
 # .x..
 
 # You can use custom strings when drawing
-print(player_field.render(tile_str="o", mine_str="@"))
+print(field.render(tile_str="o", mine_str="@"))
 
 # @ooo
 # ooo@
@@ -118,10 +108,10 @@ print(player_field.render(tile_str="o", mine_str="@"))
 # o@oo
 ```
 
-Draw player field, only showing hints and flags but not mines:
+Draw the field a player would see, only showing hints and flags but not mines:
 
 ```py
-print(player_field.render())
+print(field.render_player_field())
 
 # !...
 # 22..
@@ -129,7 +119,7 @@ print(player_field.render())
 # ....
 
 # You can use custom strings when drawing
-print(player_field.render(flag_str="?", closed_str="o"))
+print(player_field.render_player_field(flag_str="?", closed_str="o"))
 
 # ?ooo
 # 22oo
@@ -144,9 +134,11 @@ The package also contains utilities to help you generate minefields.
 Generate N many mine locations randomly for a given field size:
 
 ```py
+from minesweeper_model import generator
+
 # generate 4 mine coordinates 
 # for a field of size (5, 10)
-random_mine_coords(5, 10, 4)
+generator.random_mine_coords(5, 10, 4)
 
 # => [(1, 5), (3, 2), (0, 0), (1, 6)]
 ```
@@ -157,7 +149,7 @@ Generate hint for a single tile given a list of mine coordinates:
 mines = [(4, 1), (6, 4)]
 
 # Generate hint for a tile at (1, 1)
-hint_for_tile(1, 1, mines):
+generator.hint_for_tile(1, 1, mines):
 
 # => 0
 ```
@@ -168,7 +160,7 @@ Generate hints for an entire field:
 mines = [(4, 1), (6, 4)]
 
 # Generate hints for a field of size (10, 10)
-hints_for_field(10, 10, mines)
+generator.hints_for_field(10, 10, mines)
 
 # => {(0, 0): 0, (0, 1): 0, ... , (9, 9): 0}
 ```
@@ -178,20 +170,22 @@ hints_for_field(10, 10, mines)
 Get coordinates of surrounding tiles:
 
 ```py
-surrounding_tiles(1, 1)
+from minesweeper_model import utility
+
+utility.surrounding_tiles(1, 1)
 
 # => [(0, 0), (0, 1), (0, 2), (1, 0), 
 #     (1, 2), (2, 0), (2, 1), (2, 2)]
 
 # If the tile is on the edge, method will
 # return -ve coordinates as well.
-surrounding_tiles(0, 0)
+utility.surrounding_tiles(0, 0)
 
 # => [(-1, -1), (-1, 0), (-1, 1), (0, -1), 
 #     (0, 1), (1, -1), (1, 0), (1, 1)]
 
 # You can choose to remove -ve coordinates:
-surrounding_tiles(0, 0, True)
+utility.surrounding_tiles(0, 0, True)
 
 # => [(0, 1), (1, 0), (1, 1)]
 ```
@@ -199,8 +193,6 @@ surrounding_tiles(0, 0, True)
 Convert a textual representation of a field to parameters you can pass to a `Field` object as an easier way of creating fields (Thanks to <a href="https://github.com/27Anurag">@27Anurag</a> for the contribution):
 
 ```py
-from minesweeper_model
-
 str_field = """..x...x
 .......
 ....x..
