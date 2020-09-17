@@ -100,7 +100,7 @@ print(field.render_mines())
 # .x..
 
 # You can use custom strings when drawing
-print(field.render(tile_str="o", mine_str="@"))
+print(field.render_mines(tile_str="o", mine_str="@"))
 
 # @ooo
 # ooo@
@@ -204,3 +204,10 @@ width, height, mine_coords = utility.str_input_to_mine_coords(str_field)
 # => width: 7, height: 5, mine_coords: [(2, 0), (6, 0), (4, 2), (6, 3), (0, 4)]
 f = field.Field(width, height, mine_coords)
 ```
+
+## Development
+
+- The package currently only officially supports `python3`.
+- Tests are written with `unittest` and are under the "tests" directory. You can run all tests on the command line with `python3 -m unittest`.
+- <a href="https://flake8.pycqa.org/en/latest/">`flake8`</a> is used for checking the code follows some Python best practices and styling standards. You can run the checks on the command line with `flake8` (need to install flake8 first).
+- <a href="https://tox.readthedocs.io/en/latest/">tox</a> is used to automate testing. You can run all tests and checks (e.g. flake8) on the command line with `tox` (need to install tox first).
